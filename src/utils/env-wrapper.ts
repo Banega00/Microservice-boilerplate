@@ -39,6 +39,8 @@ class EnvWrapper {
         auth_token: this.getProperty("TWILIO_AUTH_TOKEN"),
         number: this.getProperty("TWILIO_NUMBER")
     }
+
+    public log_level = this.getProperty('log_level')
     
  
     private getProperty(property: string): string {

@@ -1,5 +1,6 @@
 import winston from "winston";
 import httpContext from 'express-http-context'
+import { env } from "./env-wrapper";
 
 const myFormat = winston.format.printf(({ level, message, timestamp, data, ip, reqId, ...metadata }) => {
     let msg = `${timestamp} | ${reqId ?? ''} | ${level} | ${metadata.label ?? ''} | ${message} `
@@ -43,7 +44,7 @@ export default class Logger{
                 // )})
             ]
         });
-        this.instance.level = "debug";
+        this.instance.level = env.log_level ?? 'debug'
     }
 
     public info(message: string, data?: any): void {
