@@ -8,7 +8,7 @@ export class ExampleService{
     constructor() {
         this.logger = new Logger(this.constructor.name)
         
-        this.logger.info('Example Service initialized')
+        // this.logger.info('Example Service initialized')
     }
 
     //If you want to return error response from here, just throw an error which will be handled in middleware's try/catch
