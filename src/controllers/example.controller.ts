@@ -14,9 +14,9 @@ export class ExampleController {
 
     }
 
-    examplePath = (request: Request, response: Response, next: NextFunction) => {
+    exampleMiddleware = (request: Request, response: Response, next: NextFunction) => {
         //!Don't use any - always look to specify exact type of payload which you expect to get here  
-        const data:any = request.body;
+        const data: any = request.body;
 
         /*
 
@@ -29,7 +29,7 @@ export class ExampleController {
 
             const serviceResponse = this.exampleService.exampleMethod(data);
 
-            sendResponse({response, status: 200, code: SuccessStatusCode.Success });
+            sendResponse({ response, status: 200, code: SuccessStatusCode.Success });
         } catch (error) {
             /*
                 If this error occurs the response will be sent to the client by calling next(error),
@@ -41,5 +41,16 @@ export class ExampleController {
         }
     }
 
+    testHttpMiddleware = async (request: Request, response: Response, next: NextFunction) => {
+        const data:any = request.body;
+        try {
 
+            const serviceResponse = await  this.exampleService.testHttpMiddleware(data);
+
+            sendResponse({ response, status: 200, code: SuccessStatusCode.Success, payload: serviceResponse });
+        } catch (error) {
+
+            next(error);
+        }
+    }
 }
