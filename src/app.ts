@@ -7,6 +7,7 @@ import httpContext from 'express-http-context'
 import { randomString } from './utils/helpers';
 import Logger from './utils/Logger';
 import { router } from "./routes/router";
+import path from 'path'
 
 const logger = new Logger('App');
 
@@ -34,6 +35,9 @@ app.use(validateRequestPayload);
 
 app.use(router)
 
+app.use(express.static(path.join(__dirname, './public')))
+
 app.use(errorHandler);
+
 
 export default app;
