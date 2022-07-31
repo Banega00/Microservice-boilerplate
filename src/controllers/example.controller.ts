@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
+import CustomError from "../errors/CustomError";
 import { ExampleService } from "../services/example.service";
-import { SuccessStatusCode } from "../status-codes";
+import { ErrorStatusCode, SuccessStatusCode } from "../status-codes";
 import Logger from "../utils/Logger";
 import { sendResponse } from "../utils/response-wrapper";
 
@@ -14,43 +15,26 @@ export class ExampleController {
 
     }
 
-    exampleMiddleware = (request: Request, response: Response, next: NextFunction) => {
+    //If you wrapped middleware function with error wrapper - there is no need to use try/catch at top level
+    //every throw error will be delegate to error handle by error wrapper
+    exampleMiddleware = async (request: Request, response: Response, next: NextFunction) => {
         //!Don't use any - always look to specify exact type of payload which you expect to get here  
         const data: any = request.body;
 
-        /*
+        //this error goes to errorWrapper -> errorHandler
+        throw new CustomError({code:ErrorStatusCode.UNKNOWN_ERROR, message:'Test error!'})
 
-            This is main try/catch for middleware
-            If you want to process more specific errors and do sth based of them
-            Place more try/catches inside of try
+        const serviceResponse = this.exampleService.exampleMethod(data);
 
-        */
-        try {
+        sendResponse({ response, status: 200, code: SuccessStatusCode.Success });
 
-            const serviceResponse = this.exampleService.exampleMethod(data);
-
-            sendResponse({ response, status: 200, code: SuccessStatusCode.Success });
-        } catch (error) {
-            /*
-                If this error occurs the response will be sent to the client by calling next(error),
-                this will call error-handler middleware responsible for packing up the error response to the client
-
-                Here, you can perform some clean up code.
-            */
-            next(error);
-        }
     }
 
     testHttpMiddleware = async (request: Request, response: Response, next: NextFunction) => {
-        const data:any = request.body;
-        try {
+        const data: any = request.body;
 
-            const serviceResponse = await  this.exampleService.testHttpMiddleware(data);
+        const serviceResponse = await this.exampleService.testHttpMiddleware(data);
 
-            sendResponse({ response, status: 200, code: SuccessStatusCode.Success, payload: serviceResponse });
-        } catch (error) {
-
-            next(error);
-        }
+        sendResponse({ response, status: 200, code: SuccessStatusCode.Success, payload: serviceResponse });
     }
 }

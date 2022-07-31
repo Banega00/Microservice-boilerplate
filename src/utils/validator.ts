@@ -17,9 +17,10 @@ export async function validateRequestPayload(request: Request, response: Respons
     next();
   } catch (error) {
     if(error instanceof ValidationError){
-      next(new CustomError({status: 400, code: ErrorStatusCode.VALIDATION_ERROR, message: `Validation error: ${error?.details[0].message}`}))
+      //this error will be caught by errorWrapper which will forward error to error handler
+      throw new CustomError({status: 400, code: ErrorStatusCode.VALIDATION_ERROR, message: `Validation error: ${error?.details[0].message}`})
     }else{
-      next(error)
+      throw error
     }
   }
 }

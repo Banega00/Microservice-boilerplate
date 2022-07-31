@@ -8,6 +8,10 @@ import { randomString } from './utils/helpers';
 import Logger from './utils/Logger';
 import { router } from "./routes/router";
 import path from 'path'
+import { errorWrapper } from "./utils/error-wrapper";
+import { sendResponse } from "./utils/response-wrapper";
+import { ErrorStatusCode, SuccessStatusCode } from "./status-codes";
+import CustomError from "./errors/CustomError";
 
 const logger = new Logger('App');
 
@@ -17,21 +21,28 @@ app.use(cors());
 app.use(json({ limit: "50mb", type: "application/json" }));
 
 app.use(httpContext.middleware);
-app.use((request: Request, response: Response, next: NextFunction) => {
+app.use(errorWrapper((request: Request, response: Response, next: NextFunction) => {
     const reqId = request.headers.reqid ?? randomString(6)
     httpContext.set('ip', request.ip)
     httpContext.set('reqId', reqId);
     httpContext.set('startTime', Date.now());
     httpContext.set('route', `${request.method.toUpperCase()} ${request.originalUrl}`);
     next();
-})
+}))
+
 //Logger for logging express route
-app.use((request: Request, response: Response, next: NextFunction) => {
+app.use(errorWrapper((request: Request, response: Response, next: NextFunction) => {
     logger.info(`Start of Request: ${httpContext.get('route')}`)
     next();
-})
+}))
 
-app.use(validateRequestPayload);
+app.use(errorWrapper(validateRequestPayload));
+
+
+app.use('/test-error-wrapper', errorWrapper(async function (request, response, next) {
+    // throw new CustomError({message:'Test Error Wrapper Message', code: ErrorStatusCode.UNKNOWN_ERROR})
+    sendResponse({response, status:200, code:SuccessStatusCode.Success})
+}))
 
 app.use(router)
 
