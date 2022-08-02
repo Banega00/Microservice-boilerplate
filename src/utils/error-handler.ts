@@ -10,8 +10,11 @@ export const errorHandler = (error: Error, request: Request, response: Response,
     logger.error('Error', error);
     
     if(error instanceof CustomError){
+        logger.error(error.message, {...error})
         return sendResponse({response, status: error.status, code: error.code, message: error.message, payload: error.payload});
     }
+
+    logger.error(error.message, error);
 
     //send info about error stack in response if environment is development
     const errorPayload = env.env_type == "development" ? error.stack : undefined;
