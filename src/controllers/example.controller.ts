@@ -4,7 +4,7 @@ import { ExampleService } from "../services/example.service";
 import { ErrorStatusCode, SuccessStatusCode } from "../status-codes";
 import Logger from "../utils/Logger";
 import { sendResponse } from "../utils/response-wrapper";
-
+import * as DTO from '../models/dto'
 export class ExampleController {
     private logger: Logger;
     private exampleService: ExampleService;
@@ -19,7 +19,7 @@ export class ExampleController {
     //every throw error will be delegate to error handle by error wrapper
     exampleMiddleware = async (request: Request, response: Response, next: NextFunction) => {
         //!Don't use any - always look to specify exact type of payload which you expect to get here  
-        const data: any = request.body;
+        const data: DTO.Request.ExampleMiddleware = request.body;
 
         //this error goes to errorWrapper -> errorHandler
         throw new CustomError({code:ErrorStatusCode.UNKNOWN_ERROR, message:'Test error!'})

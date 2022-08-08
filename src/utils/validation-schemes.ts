@@ -1,18 +1,12 @@
-import Joi from "joi";
+import { exampleMiddlewareValidationSchema } from "../models/dto/request/ExampleMiddleware.request.dto";
 
-const Schemes = {
+const Schemes:{[key:string]:{[key:string]:Zod.ZodObject<any>}} = {
     POST:{
-        "/test": Joi.object({
-            content: Joi.any().required(),
-            from: Joi.string().optional(),
-            to: Joi.string().required(),
-            templateId: Joi.number().optional(),
-            businessId: Joi.alternatives().try(Joi.string(), Joi.number()),
-        })
+        "/test": exampleMiddlewareValidationSchema
     },
 
     GET:{
-        
+        "/example-path": exampleMiddlewareValidationSchema
     },
 
     DELETE:{
