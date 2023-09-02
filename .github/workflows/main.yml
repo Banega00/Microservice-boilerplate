@@ -10,7 +10,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Run Vulnerability Check Script
-        run: |
-          echo "Running my custom script"
-          ./path/to/your-script.sh # Modify with the actual path to your script
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14' # Adjust the Node.js version as needed
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run TypeScript Script
+        run: npx ts-node ./vuln_check_script index.ts
