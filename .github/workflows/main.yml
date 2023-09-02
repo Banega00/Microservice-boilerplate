@@ -16,7 +16,7 @@ jobs:
           node-version: '14' # Adjust the Node.js version as needed
 
       - name: Install Dependencies
-        run: npm i -p ./.github/vuln_check_script
+        run: cd ./.github/vuln_check_script & pwd & npm ci
 
       - name: Run TypeScript Script
         run: pwd & npx ts-node ./.github/vuln_check_script/index.ts
