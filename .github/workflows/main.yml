@@ -19,4 +19,4 @@ jobs:
         run: npm i -p ./.github/vuln_check_script
 
       - name: Run TypeScript Script
-        run: npx ts-node ./vuln_check_script/index.ts
+        run: pwd & npx ts-node ./vuln_check_script/index.ts
