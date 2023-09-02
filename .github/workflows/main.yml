@@ -1,0 +1,16 @@
+name: Run Vulnerability Check
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Run Vulnerability Check Script
+        run: |
+          echo "Running my custom script"
+          ./path/to/your-script.sh # Modify with the actual path to your script
