@@ -20,3 +20,4 @@ jobs:
 
       - name: Check vulnerabilities
         run: pwd & npx ts-node ./.github/vuln_check_script/index.ts
+
