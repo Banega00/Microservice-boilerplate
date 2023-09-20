@@ -214,7 +214,6 @@ async function vulnerabilityCheck(options:{
         }else{
             process.exit(1);
         }
-        
 
     } catch (error){
         if(error instanceof Error){
