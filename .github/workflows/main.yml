@@ -18,5 +18,5 @@ jobs:
       - name: Install Dependencies
         run: cd ./.github/vuln_check_script & pwd & npm ci
 
-      - name: Run TypeScript Script
+      - name: Check vulnerabilities
         run: pwd & npx ts-node ./.github/vuln_check_script/index.ts
